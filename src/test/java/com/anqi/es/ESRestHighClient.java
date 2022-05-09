@@ -166,7 +166,7 @@ public class ESRestHighClient {
                 "  \"createTime\" : \"2019-12-20 17:56:56\"\n" +
                 "  }\n" +
                 "]";
-        service.importAll("idx_pro", true, bulkVal);
+        service.bulkCreateDoc("idx_pro", true, bulkVal);
     }
 
     @Test

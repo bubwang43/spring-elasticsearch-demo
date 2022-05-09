@@ -217,7 +217,7 @@ public class RestHighLevelClientService {
      * @return
      * @throws IOException
      */
-    public BulkResponse importAll(String indexName, boolean isAutoId,  String  source) throws IOException{
+    public BulkResponse bulkCreateDoc(String indexName, boolean isAutoId,  String  source) throws IOException{
         if (0 == source.length()){
             //todo 抛出异常 导入数据为空
         }
@@ -228,11 +228,11 @@ public class RestHighLevelClientService {
         //todo 识别json数组
         if (isAutoId) {
             for (Object s : array) {
-                request.add(new IndexRequest(indexName).source(s, XContentType.JSON));
+                request.add(new IndexRequest(indexName).source(JSON.toJSONString(s), XContentType.JSON));
             }
         } else {
             for (Object s : array) {
-                request.add(new IndexRequest(indexName).id(JSONObject.parseObject(s.toString()).getString("id")).source(s, XContentType.JSON));
+                request.add(new IndexRequest(indexName).id(JSONObject.parseObject(s.toString()).getString("id")).source(JSON.toJSONString(s), XContentType.JSON));
             }
         }
         return client.bulk(request, RequestOptions.DEFAULT);
