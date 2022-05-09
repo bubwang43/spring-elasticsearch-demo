@@ -3,7 +3,7 @@
 <a href="#"><img src="https://img.shields.io/badge/公众号-Java后端架构充电宝-blue.svg" alt="公众号"></a>
 
 ## 简介
-+ 基于ElasticSearch7.3.2版本的通用搜索系统
++ 基于ElasticSearch7.10.2版本的通用搜索系统
 + 使用rest-high-level-client操作ES
 + 封装常用api，包含索引的CRUD、文档的CRUD、索引定制化、模糊搜索、精准匹配搜索
 + 是一套操作简单的搜索系统脚手架，稍加修改即可在项目中快速搭建起搜索系统
@@ -19,8 +19,8 @@
 ## 组件版本
 | 组件                     | Version       |
 | ------------------------ | ------------- |
-| Elasticsearch            | 7.3.2         |
-| Elasticsearch-rest-high-level-client | 7.3.2         |
+| Elasticsearch            | 7.10.2         |
+| Elasticsearch-rest-high-level-client | 7.10.2         |
 | Fastjson                 | 1.2.60        |
 | SpringBoot               | 2.1.0.RELEASE |
 
@@ -53,14 +53,13 @@
 ```
 
 ## maven说明
-因为elasticsearch-rest-high-level-client7.3.2 依赖 elasticsearch 6.4.2 和 elasticsearch-rest-client 6.4.2 ，而目前这已经是中央仓库中最高版本的jar包了（8.0.0）还未迁入中央仓库，所以我们手动引入7.3.2的新版本elasticsearch和elasticsearch-rest-client
 
 ```xml
         <!-- high client-->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.3.2</version>
+            <version>7.10.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.elasticsearch.client</groupId>
@@ -76,14 +75,14 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>7.3.2</version>
+            <version>7.10.2</version>
         </dependency>
 
         <!--rest low client-->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.3.2</version>
+            <version>7.10.2</version>
         </dependency>
 
         <!-- springboot-->
