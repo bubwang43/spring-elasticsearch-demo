@@ -11,16 +11,14 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PdfGraphicService {
     @Value("${graphic.hostport}")
     private String graphicHostport;
 
-    private String basePath = "D:\\pdf_graphic";
+    private String basePath = "D:\\cicc\\report_graphic";
 
     @Autowired
     RestHighLevelClientService restHighLevelClientService;
@@ -57,8 +55,10 @@ public class PdfGraphicService {
                 // 如果是文件则将其加入到文件数组中
                 GraphicsEsData graphicsEsData = new GraphicsEsData();
                 graphicsEsData.setReportTitle(reportTitleDir.getName());
-                graphicsEsData.setTitle(graphic.getName());
-                graphicsEsData.setUrl(graphicHostport + "/pdf_graphic/" + reportTitleDir.getName() + "/" + graphic.getName());
+                String title = graphic.getName();
+                title = title.substring(0, title.lastIndexOf("."));
+                graphicsEsData.setTitle(title);
+                graphicsEsData.setUrl(graphicHostport + "/report_graphic/" + reportTitleDir.getName() + "/" + graphic.getName());
                 list.add(graphicsEsData);
             }
         }
