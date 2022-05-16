@@ -22,6 +22,7 @@ import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
@@ -202,6 +203,29 @@ public class RestHighLevelClientService {
         SearchRequest request = new SearchRequest(indexNames);
         SearchSourceBuilder builder = new SearchSourceBuilder();
         builder.query(QueryBuilders.termsQuery(field, key))
+                .from(page)
+                .size(size);
+        request.source(builder);
+        return client.search(request, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * 组合查询(或):只要一个field满足key就可以查询到
+     * @param filedKeyMap
+     * @param page
+     * @param size
+     * @param indexNames
+     * @return
+     * @throws IOException
+     */
+    public SearchResponse shouldGroupSearch(Map<String, String> filedKeyMap, int page, int size, String ... indexNames) throws IOException {
+        SearchRequest request = new SearchRequest(indexNames);
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        for (Map.Entry<String, String> entry : filedKeyMap.entrySet()) {
+            boolQuery.should(QueryBuilders.matchQuery(entry.getKey(), entry.getValue()));
+        }
+        builder.query(boolQuery)
                 .from(page)
                 .size(size);
         request.source(builder);

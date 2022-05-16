@@ -27,4 +27,10 @@ public class PdfGraphicController {
                                       @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) throws IOException {
         return pdfGraphicService.search(field, key, pageNumber, pageSize);
     }
+
+    @GetMapping("/graphics/should")
+    public Map<String, Object> search(@RequestParam("content") String content,
+                                      @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) throws IOException {
+        return pdfGraphicService.shouldGroupSearch(content, pageNumber, pageSize);
+    }
 }

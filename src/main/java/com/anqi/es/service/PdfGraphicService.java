@@ -66,6 +66,29 @@ public class PdfGraphicService implements IPdfGraphicService{
         return result;
     }
 
+    @Override
+    public Map<String, Object> shouldGroupSearch(String content, int pageNumber, int pageSize) throws IOException {
+        int page = (pageNumber - 1) * pageSize;
+        Map<String, String> filedKeyMap = new HashMap<>();
+        filedKeyMap.put("reportTitle", content);
+        filedKeyMap.put("title", content);
+        SearchResponse response = restHighLevelClientService.shouldGroupSearch(filedKeyMap, page, pageSize, "report-graphic");
+        List<GraphicsEsEntity> graphicsEsEntityList = new ArrayList<>();
+        for (SearchHit hit : response.getHits()) {
+            GraphicsEsEntity graphicsEsEntity = JSON.parseObject(hit.getSourceAsString(), GraphicsEsEntity.class);
+            graphicsEsEntityList.add(graphicsEsEntity);
+        }
+        long total = response.getHits().getTotalHits().value;
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", graphicsEsEntityList);
+        result.put("pageNumber", pageNumber);
+        result.put("pageSize", pageSize);
+        result.put("total", total);
+        Long totalPages = (total + pageSize -1) / pageSize;
+        result.put("totalPages", totalPages);
+        return result;
+    }
+
     private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsEntity> list) {
         // 获取文件列表
         File[] graphicList = reportTitleDir.listFiles();
