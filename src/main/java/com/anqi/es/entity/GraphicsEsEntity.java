@@ -3,7 +3,7 @@ package com.anqi.es.entity;
 import lombok.Data;
 
 @Data
-public class GraphicsEsData {
+public class GraphicsEsEntity {
     private String reportTitle;
 
     private String title;

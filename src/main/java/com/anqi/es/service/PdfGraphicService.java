@@ -1,9 +1,11 @@
 package com.anqi.es.service;
 
 import com.alibaba.fastjson.JSON;
-import com.anqi.es.entity.GraphicsEsData;
+import com.anqi.es.entity.GraphicsEsEntity;
 import com.anqi.es.highclient.RestHighLevelClientService;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PdfGraphicService {
+public class PdfGraphicService implements IPdfGraphicService{
     @Value("${graphic.hostport}")
     private String graphicHostport;
 
@@ -25,7 +27,7 @@ public class PdfGraphicService {
 
     public String bulkCreatePdfGraphicDoc() throws IOException {
         File dir = new File(basePath);
-        List<GraphicsEsData> list = new ArrayList<>();
+        List<GraphicsEsEntity> list = new ArrayList<>();
         // 判断文件夹是否存在
         if (!dir.exists()) {
             System.out.println("目录不存在");
@@ -42,7 +44,20 @@ public class PdfGraphicService {
         return "写入es失败";
     }
 
-    private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsData> list) {
+    @Override
+    public List<GraphicsEsEntity> search(String field, String key, int page, int size) throws IOException {
+        SearchResponse response = restHighLevelClientService.search(field, key, page, size, "report-graphic");
+//        return response.toString();
+        List<GraphicsEsEntity> sources = new ArrayList<>();
+        for (SearchHit hit : response.getHits()) {
+            GraphicsEsEntity graphicsEsEntity = JSON.parseObject(hit.getSourceAsString(), GraphicsEsEntity.class);
+            sources.add(graphicsEsEntity);
+//            System.out.println(hit.getSourceAsString());
+        }
+        return sources;
+    }
+
+    private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsEntity> list) {
         // 获取文件列表
         File[] graphicList = reportTitleDir.listFiles();
         assert graphicList != null;
@@ -53,13 +68,13 @@ public class PdfGraphicService {
 //                    getAllFile(file, allFileList);
             } else {
                 // 如果是文件则将其加入到文件数组中
-                GraphicsEsData graphicsEsData = new GraphicsEsData();
-                graphicsEsData.setReportTitle(reportTitleDir.getName());
+                GraphicsEsEntity graphicsEsEntity = new GraphicsEsEntity();
+                graphicsEsEntity.setReportTitle(reportTitleDir.getName());
                 String title = graphic.getName();
                 title = title.substring(0, title.lastIndexOf("."));
-                graphicsEsData.setTitle(title);
-                graphicsEsData.setUrl(graphicHostport + "/report_graphic/" + reportTitleDir.getName() + "/" + graphic.getName());
-                list.add(graphicsEsData);
+                graphicsEsEntity.setTitle(title);
+                graphicsEsEntity.setUrl(graphicHostport + "/report_graphic/" + reportTitleDir.getName() + "/" + graphic.getName());
+                list.add(graphicsEsEntity);
             }
         }
     }

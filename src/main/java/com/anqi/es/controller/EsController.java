@@ -1,6 +1,5 @@
 package com.anqi.es.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.anqi.es.highclient.RestHighLevelClientService;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -21,7 +20,7 @@ import java.util.List;
 @RestController
 public class EsController {
     @Autowired
-    RestHighLevelClientService service;
+    RestHighLevelClientService restHighLevelClientService;
 
     @GetMapping("/es")
     public String testHigh(HttpServletResponse httpServletResponse) throws IOException{
@@ -32,7 +31,7 @@ public class EsController {
                 "  \"date\" : \"2019-07-28\"\n" +
                 "}";
 
-        IndexResponse response = service.addDoc("idx_clouthing", source);
+        IndexResponse response = restHighLevelClientService.addDoc("idx_clouthing", source);
 
         httpServletResponse.getWriter().println();
 
@@ -40,16 +39,16 @@ public class EsController {
     }
 
     @GetMapping("/es/search")
-    public String search(@RequestParam("field") String field, @RequestParam("key") String key,
+    public List<String> search(@RequestParam("field") String field, @RequestParam("key") String key,
                                  @RequestParam("page") int page, @RequestParam("size") int size,
                                  @RequestParam("indexNames") String indexNames) throws IOException {
-        SearchResponse response = service.search(field, key, page, size, indexNames);
+        SearchResponse response = restHighLevelClientService.search(field, key, page, size, indexNames);
 //        return response.toString();
         List<String> sources = new ArrayList<>();
         for (SearchHit hit : response.getHits()) {
             sources.add(hit.getSourceAsString());
 //            System.out.println(hit.getSourceAsString());
         }
-        return JSON.toJSONString(sources);
+       return sources;
     }
 }
