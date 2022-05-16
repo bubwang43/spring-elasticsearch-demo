@@ -24,7 +24,7 @@ public class PdfGraphicController {
 
     @GetMapping("/graphics")
     public Map<String, Object> search(@RequestParam("field") String field, @RequestParam("key") String key,
-                                      @RequestParam("pageNumber") int pageNumber, @RequestParam("pagerSize") int pagerSize) throws IOException {
-        return pdfGraphicService.search(field, key, pageNumber, pagerSize);
+                                      @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) throws IOException {
+        return pdfGraphicService.search(field, key, pageNumber, pageSize);
     }
 }

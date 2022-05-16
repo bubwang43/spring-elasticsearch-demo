@@ -50,7 +50,6 @@ public class PdfGraphicService implements IPdfGraphicService{
     public Map<String, Object> search(String field, String key, int pageNumber, int pageSize) throws IOException {
         int page = (pageNumber - 1) * pageSize;
         SearchResponse response = restHighLevelClientService.search(field, key, page, pageSize, "report-graphic");
-//        return response.toString();
         List<GraphicsEsEntity> graphicsEsEntityList = new ArrayList<>();
         for (SearchHit hit : response.getHits()) {
             GraphicsEsEntity graphicsEsEntity = JSON.parseObject(hit.getSourceAsString(), GraphicsEsEntity.class);
