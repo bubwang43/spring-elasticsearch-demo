@@ -1,12 +1,10 @@
 package com.anqi.es.service;
 
-import com.anqi.es.entity.GraphicsEsEntity;
-
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 public interface IPdfGraphicService {
     String bulkCreatePdfGraphicDoc() throws IOException;
 
-    List<GraphicsEsEntity> search(String field, String key, int page, int size) throws IOException;
+    Map<String, Object> search(String field, String key, int pageNumber, int pageSize) throws IOException;
 }

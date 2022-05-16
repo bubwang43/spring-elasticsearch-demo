@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PdfGraphicService implements IPdfGraphicService{
@@ -45,16 +47,24 @@ public class PdfGraphicService implements IPdfGraphicService{
     }
 
     @Override
-    public List<GraphicsEsEntity> search(String field, String key, int page, int size) throws IOException {
-        SearchResponse response = restHighLevelClientService.search(field, key, page, size, "report-graphic");
+    public Map<String, Object> search(String field, String key, int pageNumber, int pageSize) throws IOException {
+        int page = (pageNumber - 1) * pageSize;
+        SearchResponse response = restHighLevelClientService.search(field, key, page, pageSize, "report-graphic");
 //        return response.toString();
-        List<GraphicsEsEntity> sources = new ArrayList<>();
+        List<GraphicsEsEntity> graphicsEsEntityList = new ArrayList<>();
         for (SearchHit hit : response.getHits()) {
             GraphicsEsEntity graphicsEsEntity = JSON.parseObject(hit.getSourceAsString(), GraphicsEsEntity.class);
-            sources.add(graphicsEsEntity);
-//            System.out.println(hit.getSourceAsString());
+            graphicsEsEntityList.add(graphicsEsEntity);
         }
-        return sources;
+        long total = response.getHits().getTotalHits().value;
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", graphicsEsEntityList);
+        result.put("pageNumber", pageNumber);
+        result.put("pageSize", pageSize);
+        result.put("total", total);
+        Long totalPages = (total + pageSize -1) / pageSize;
+        result.put("totalPages", totalPages);
+        return result;
     }
 
     private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsEntity> list) {

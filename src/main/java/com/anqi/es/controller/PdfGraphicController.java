@@ -1,6 +1,5 @@
 package com.anqi.es.controller;
 
-import com.anqi.es.entity.GraphicsEsEntity;
 import com.anqi.es.service.PdfGraphicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pdfgraphic")
@@ -24,8 +23,8 @@ public class PdfGraphicController {
     }
 
     @GetMapping("/graphics")
-    public List<GraphicsEsEntity> search(@RequestParam("field") String field, @RequestParam("key") String key,
-                                         @RequestParam("page") int page, @RequestParam("size") int size) throws IOException {
-        return pdfGraphicService.search(field, key, page, size);
+    public Map<String, Object> search(@RequestParam("field") String field, @RequestParam("key") String key,
+                                      @RequestParam("pageNumber") int pageNumber, @RequestParam("pagerSize") int pagerSize) throws IOException {
+        return pdfGraphicService.search(field, key, pageNumber, pagerSize);
     }
 }
