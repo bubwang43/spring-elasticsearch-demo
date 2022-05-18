@@ -487,4 +487,11 @@
       wx_share_picture = #{wxSharePicture,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByRange" resultMap="BaseResultMap">
+    select
+      id, d_id, title, file_url
+    from document
+    limit #{start}, #{size}
+  </select>
 </mapper>

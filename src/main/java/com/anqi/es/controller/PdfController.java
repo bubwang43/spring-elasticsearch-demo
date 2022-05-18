@@ -1,5 +1,7 @@
 package com.anqi.es.controller;
 
+import com.anqi.es.service.IPdfService;
+import com.anqi.es.vo.Result;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +21,14 @@ import java.io.IOException;
 public class PdfController {
     @Resource
     private RestTemplate restTemplate;
+    @Resource
+    private IPdfService pdfService;
+
+    @RequestMapping("/downloadPdf")
+    public Result download(@RequestParam("start") int start, @RequestParam("size") int size) throws IOException {
+        return pdfService.download(start,size);
+
+    }
 
     @RequestMapping("/download")
     public ResponseEntity download(@RequestParam("url") String url) throws IOException {

@@ -1,8 +1,9 @@
-package com.anqi.es.service;
+package com.anqi.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.anqi.es.entity.GraphicsEsEntity;
 import com.anqi.es.highclient.RestHighLevelClientService;
+import com.anqi.es.service.IPdfGraphicService;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class PdfGraphicService implements IPdfGraphicService{
+public class PdfGraphicService implements IPdfGraphicService {
     @Value("${graphic.hostport}")
     private String graphicHostport;
 

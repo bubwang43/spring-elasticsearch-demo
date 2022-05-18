@@ -2,7 +2,7 @@ package com.anqi.es.controller;
 
 import com.anqi.es.entity.DocumentEntity;
 import com.anqi.es.mapper.DocumentMapper;
-import com.anqi.es.service.PdfGraphicService;
+import com.anqi.es.service.impl.PdfGraphicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
