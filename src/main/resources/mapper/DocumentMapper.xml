@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anqi.es.mapper.DocumentMapper">
+  <resultMap id="BaseResultMap" type="com.anqi.es.entity.DocumentEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="d_id" jdbcType="BIGINT" property="dId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author_ids" jdbcType="VARCHAR" property="authorIds" />
+    <result column="author_names" jdbcType="VARCHAR" property="authorNames" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_important" jdbcType="BOOLEAN" property="isImportant" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="level_change" jdbcType="INTEGER" property="levelChange" />
+    <result column="industry_ids" jdbcType="VARCHAR" property="industryIds" />
+    <result column="stock_code" jdbcType="VARCHAR" property="stockCode" />
+    <result column="is_american" jdbcType="BOOLEAN" property="isAmerican" />
+    <result column="related_ids" jdbcType="VARCHAR" property="relatedIds" />
+    <result column="highlight" jdbcType="VARCHAR" property="highlight" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="file_size" jdbcType="INTEGER" property="fileSize" />
+    <result column="file_page_size" jdbcType="INTEGER" property="filePageSize" />
+    <result column="protected_time" jdbcType="TIMESTAMP" property="protectedTime" />
+    <result column="audio_url" jdbcType="VARCHAR" property="audioUrl" />
+    <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="language_type" jdbcType="INTEGER" property="languageType" />
+    <result column="language_related" jdbcType="VARCHAR" property="languageRelated" />
+    <result column="index_pushed" jdbcType="INTEGER" property="indexPushed" />
+    <result column="parse_prepared" jdbcType="INTEGER" property="parsePrepared" />
+    <result column="audio_name" jdbcType="VARCHAR" property="audioName" />
+    <result column="sync_related_ids" jdbcType="VARCHAR" property="syncRelatedIds" />
+    <result column="sync_label" jdbcType="VARCHAR" property="syncLabel" />
+    <result column="sub_stock_code" jdbcType="VARCHAR" property="subStockCode" />
+    <result column="comment_state" jdbcType="BOOLEAN" property="commentState" />
+    <result column="comment_limit_state" jdbcType="BOOLEAN" property="commentLimitState" />
+    <result column="comment_cancel_stop_time" jdbcType="TIMESTAMP" property="commentCancelStopTime" />
+    <result column="pdf_version" jdbcType="INTEGER" property="pdfVersion" />
+    <result column="portal_category_ids" jdbcType="VARCHAR" property="portalCategoryIds" />
+    <result column="wx_share_picture" jdbcType="VARCHAR" property="wxSharePicture" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, d_id, title, author_ids, author_names, publish_time, category_id, `status`, is_important, 
+    `level`, level_change, industry_ids, stock_code, is_american, related_ids, highlight, 
+    price, file_url, file_size, file_page_size, protected_time, audio_url, video_url, 
+    create_time, update_time, language_type, language_related, index_pushed, parse_prepared, 
+    audio_name, sync_related_ids, sync_label, sub_stock_code, comment_state, comment_limit_state, 
+    comment_cancel_stop_time, pdf_version, portal_category_ids, wx_share_picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from document
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from document
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.anqi.es.entity.DocumentEntity" useGeneratedKeys="true">
+    insert into document (d_id, title, author_ids, 
+      author_names, publish_time, category_id, 
+      `status`, is_important, `level`, 
+      level_change, industry_ids, stock_code, 
+      is_american, related_ids, highlight, 
+      price, file_url, file_size, 
+      file_page_size, protected_time, audio_url, 
+      video_url, create_time, update_time, 
+      language_type, language_related, index_pushed, 
+      parse_prepared, audio_name, sync_related_ids, 
+      sync_label, sub_stock_code, comment_state, 
+      comment_limit_state, comment_cancel_stop_time, 
+      pdf_version, portal_category_ids, wx_share_picture
+      )
+    values (#{dId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{authorIds,jdbcType=VARCHAR}, 
+      #{authorNames,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, #{categoryId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{isImportant,jdbcType=BOOLEAN}, #{level,jdbcType=INTEGER}, 
+      #{levelChange,jdbcType=INTEGER}, #{industryIds,jdbcType=VARCHAR}, #{stockCode,jdbcType=VARCHAR}, 
+      #{isAmerican,jdbcType=BOOLEAN}, #{relatedIds,jdbcType=VARCHAR}, #{highlight,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{fileUrl,jdbcType=VARCHAR}, #{fileSize,jdbcType=INTEGER}, 
+      #{filePageSize,jdbcType=INTEGER}, #{protectedTime,jdbcType=TIMESTAMP}, #{audioUrl,jdbcType=VARCHAR}, 
+      #{videoUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{languageType,jdbcType=INTEGER}, #{languageRelated,jdbcType=VARCHAR}, #{indexPushed,jdbcType=INTEGER}, 
+      #{parsePrepared,jdbcType=INTEGER}, #{audioName,jdbcType=VARCHAR}, #{syncRelatedIds,jdbcType=VARCHAR}, 
+      #{syncLabel,jdbcType=VARCHAR}, #{subStockCode,jdbcType=VARCHAR}, #{commentState,jdbcType=BOOLEAN}, 
+      #{commentLimitState,jdbcType=BOOLEAN}, #{commentCancelStopTime,jdbcType=TIMESTAMP}, 
+      #{pdfVersion,jdbcType=INTEGER}, #{portalCategoryIds,jdbcType=VARCHAR}, #{wxSharePicture,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.anqi.es.entity.DocumentEntity" useGeneratedKeys="true">
+    insert into document
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dId != null">
+        d_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="authorIds != null">
+        author_ids,
+      </if>
+      <if test="authorNames != null">
+        author_names,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="isImportant != null">
+        is_important,
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+      <if test="levelChange != null">
+        level_change,
+      </if>
+      <if test="industryIds != null">
+        industry_ids,
+      </if>
+      <if test="stockCode != null">
+        stock_code,
+      </if>
+      <if test="isAmerican != null">
+        is_american,
+      </if>
+      <if test="relatedIds != null">
+        related_ids,
+      </if>
+      <if test="highlight != null">
+        highlight,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="fileSize != null">
+        file_size,
+      </if>
+      <if test="filePageSize != null">
+        file_page_size,
+      </if>
+      <if test="protectedTime != null">
+        protected_time,
+      </if>
+      <if test="audioUrl != null">
+        audio_url,
+      </if>
+      <if test="videoUrl != null">
+        video_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="languageType != null">
+        language_type,
+      </if>
+      <if test="languageRelated != null">
+        language_related,
+      </if>
+      <if test="indexPushed != null">
+        index_pushed,
+      </if>
+      <if test="parsePrepared != null">
+        parse_prepared,
+      </if>
+      <if test="audioName != null">
+        audio_name,
+      </if>
+      <if test="syncRelatedIds != null">
+        sync_related_ids,
+      </if>
+      <if test="syncLabel != null">
+        sync_label,
+      </if>
+      <if test="subStockCode != null">
+        sub_stock_code,
+      </if>
+      <if test="commentState != null">
+        comment_state,
+      </if>
+      <if test="commentLimitState != null">
+        comment_limit_state,
+      </if>
+      <if test="commentCancelStopTime != null">
+        comment_cancel_stop_time,
+      </if>
+      <if test="pdfVersion != null">
+        pdf_version,
+      </if>
+      <if test="portalCategoryIds != null">
+        portal_category_ids,
+      </if>
+      <if test="wxSharePicture != null">
+        wx_share_picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dId != null">
+        #{dId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIds != null">
+        #{authorIds,jdbcType=VARCHAR},
+      </if>
+      <if test="authorNames != null">
+        #{authorNames,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isImportant != null">
+        #{isImportant,jdbcType=BOOLEAN},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="levelChange != null">
+        #{levelChange,jdbcType=INTEGER},
+      </if>
+      <if test="industryIds != null">
+        #{industryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="stockCode != null">
+        #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isAmerican != null">
+        #{isAmerican,jdbcType=BOOLEAN},
+      </if>
+      <if test="relatedIds != null">
+        #{relatedIds,jdbcType=VARCHAR},
+      </if>
+      <if test="highlight != null">
+        #{highlight,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="filePageSize != null">
+        #{filePageSize,jdbcType=INTEGER},
+      </if>
+      <if test="protectedTime != null">
+        #{protectedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audioUrl != null">
+        #{audioUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null">
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="languageType != null">
+        #{languageType,jdbcType=INTEGER},
+      </if>
+      <if test="languageRelated != null">
+        #{languageRelated,jdbcType=VARCHAR},
+      </if>
+      <if test="indexPushed != null">
+        #{indexPushed,jdbcType=INTEGER},
+      </if>
+      <if test="parsePrepared != null">
+        #{parsePrepared,jdbcType=INTEGER},
+      </if>
+      <if test="audioName != null">
+        #{audioName,jdbcType=VARCHAR},
+      </if>
+      <if test="syncRelatedIds != null">
+        #{syncRelatedIds,jdbcType=VARCHAR},
+      </if>
+      <if test="syncLabel != null">
+        #{syncLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="subStockCode != null">
+        #{subStockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commentState != null">
+        #{commentState,jdbcType=BOOLEAN},
+      </if>
+      <if test="commentLimitState != null">
+        #{commentLimitState,jdbcType=BOOLEAN},
+      </if>
+      <if test="commentCancelStopTime != null">
+        #{commentCancelStopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pdfVersion != null">
+        #{pdfVersion,jdbcType=INTEGER},
+      </if>
+      <if test="portalCategoryIds != null">
+        #{portalCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="wxSharePicture != null">
+        #{wxSharePicture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.anqi.es.entity.DocumentEntity">
+    update document
+    <set>
+      <if test="dId != null">
+        d_id = #{dId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="authorIds != null">
+        author_ids = #{authorIds,jdbcType=VARCHAR},
+      </if>
+      <if test="authorNames != null">
+        author_names = #{authorNames,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isImportant != null">
+        is_important = #{isImportant,jdbcType=BOOLEAN},
+      </if>
+      <if test="level != null">
+        `level` = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="levelChange != null">
+        level_change = #{levelChange,jdbcType=INTEGER},
+      </if>
+      <if test="industryIds != null">
+        industry_ids = #{industryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="stockCode != null">
+        stock_code = #{stockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isAmerican != null">
+        is_american = #{isAmerican,jdbcType=BOOLEAN},
+      </if>
+      <if test="relatedIds != null">
+        related_ids = #{relatedIds,jdbcType=VARCHAR},
+      </if>
+      <if test="highlight != null">
+        highlight = #{highlight,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null">
+        file_size = #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="filePageSize != null">
+        file_page_size = #{filePageSize,jdbcType=INTEGER},
+      </if>
+      <if test="protectedTime != null">
+        protected_time = #{protectedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audioUrl != null">
+        audio_url = #{audioUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null">
+        video_url = #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="languageType != null">
+        language_type = #{languageType,jdbcType=INTEGER},
+      </if>
+      <if test="languageRelated != null">
+        language_related = #{languageRelated,jdbcType=VARCHAR},
+      </if>
+      <if test="indexPushed != null">
+        index_pushed = #{indexPushed,jdbcType=INTEGER},
+      </if>
+      <if test="parsePrepared != null">
+        parse_prepared = #{parsePrepared,jdbcType=INTEGER},
+      </if>
+      <if test="audioName != null">
+        audio_name = #{audioName,jdbcType=VARCHAR},
+      </if>
+      <if test="syncRelatedIds != null">
+        sync_related_ids = #{syncRelatedIds,jdbcType=VARCHAR},
+      </if>
+      <if test="syncLabel != null">
+        sync_label = #{syncLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="subStockCode != null">
+        sub_stock_code = #{subStockCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commentState != null">
+        comment_state = #{commentState,jdbcType=BOOLEAN},
+      </if>
+      <if test="commentLimitState != null">
+        comment_limit_state = #{commentLimitState,jdbcType=BOOLEAN},
+      </if>
+      <if test="commentCancelStopTime != null">
+        comment_cancel_stop_time = #{commentCancelStopTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pdfVersion != null">
+        pdf_version = #{pdfVersion,jdbcType=INTEGER},
+      </if>
+      <if test="portalCategoryIds != null">
+        portal_category_ids = #{portalCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="wxSharePicture != null">
+        wx_share_picture = #{wxSharePicture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.anqi.es.entity.DocumentEntity">
+    update document
+    set d_id = #{dId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      author_ids = #{authorIds,jdbcType=VARCHAR},
+      author_names = #{authorNames,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=INTEGER},
+      is_important = #{isImportant,jdbcType=BOOLEAN},
+      `level` = #{level,jdbcType=INTEGER},
+      level_change = #{levelChange,jdbcType=INTEGER},
+      industry_ids = #{industryIds,jdbcType=VARCHAR},
+      stock_code = #{stockCode,jdbcType=VARCHAR},
+      is_american = #{isAmerican,jdbcType=BOOLEAN},
+      related_ids = #{relatedIds,jdbcType=VARCHAR},
+      highlight = #{highlight,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=INTEGER},
+      file_page_size = #{filePageSize,jdbcType=INTEGER},
+      protected_time = #{protectedTime,jdbcType=TIMESTAMP},
+      audio_url = #{audioUrl,jdbcType=VARCHAR},
+      video_url = #{videoUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      language_type = #{languageType,jdbcType=INTEGER},
+      language_related = #{languageRelated,jdbcType=VARCHAR},
+      index_pushed = #{indexPushed,jdbcType=INTEGER},
+      parse_prepared = #{parsePrepared,jdbcType=INTEGER},
+      audio_name = #{audioName,jdbcType=VARCHAR},
+      sync_related_ids = #{syncRelatedIds,jdbcType=VARCHAR},
+      sync_label = #{syncLabel,jdbcType=VARCHAR},
+      sub_stock_code = #{subStockCode,jdbcType=VARCHAR},
+      comment_state = #{commentState,jdbcType=BOOLEAN},
+      comment_limit_state = #{commentLimitState,jdbcType=BOOLEAN},
+      comment_cancel_stop_time = #{commentCancelStopTime,jdbcType=TIMESTAMP},
+      pdf_version = #{pdfVersion,jdbcType=INTEGER},
+      portal_category_ids = #{portalCategoryIds,jdbcType=VARCHAR},
+      wx_share_picture = #{wxSharePicture,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
