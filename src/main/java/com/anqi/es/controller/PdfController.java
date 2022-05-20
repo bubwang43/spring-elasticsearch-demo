@@ -6,15 +6,22 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 @RestController
 @RequestMapping(value = "/pdf")
@@ -53,9 +60,9 @@ public class PdfController {
 
     public ResponseEntity<byte[]> getResponseEntity(String url) throws IOException {
         try {
-            //        String url = "http://static.cninfo.com.cn/finalpage/2008-03-27/38334292.PDF";
+//            url = "http://static.cninfo.com.cn/finalpage/2008-03-27/38334292.PDF";
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Cookie", "");
+            headers.add("Cookie", "111");
             HttpEntity<String> entity = new HttpEntity<>("", headers);//将请求头传入请求体种
             ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class);
             return response;
@@ -76,4 +83,28 @@ public class PdfController {
             e.printStackTrace();
         }
     }
+
+    @GetMapping("/download1")
+    public void getFileV2(HttpServletResponse response) throws Exception {
+        //设置请求头，表示下载文件和文件名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("xx.pdf", "utf-8"));
+        String urlStr = "http://static.cninfo.com.cn/finalpage/2008-03-27/38334292.PDF";
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // 设置超时间为3秒
+        conn.setConnectTimeout(3 * 1000);
+        //获取输入流
+        InputStream inputStream = conn.getInputStream();
+        //获取输出流
+        ServletOutputStream outputStream = response.getOutputStream();
+        //每次下载1024位
+        byte[] b =new byte[1024];
+        int len = -1;
+        while((len = inputStream.read(b))!=-1) {
+            outputStream.write(b, 0, len);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
+
 }

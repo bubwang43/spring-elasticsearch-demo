@@ -8,5 +8,7 @@ public class GraphicsEsEntity {
 
     private String title;
 
+    private String content;
+
     private String url;
 }

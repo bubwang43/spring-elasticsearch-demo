@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +74,7 @@ public class PdfGraphicService implements IPdfGraphicService {
         Map<String, String> filedKeyMap = new HashMap<>();
         filedKeyMap.put("reportTitle", content);
         filedKeyMap.put("title", content);
+        filedKeyMap.put("content", content);
         SearchResponse response = restHighLevelClientService.shouldGroupSearch(filedKeyMap, page, pageSize, "report-graphic");
         List<GraphicsEsEntity> graphicsEsEntityList = new ArrayList<>();
         for (SearchHit hit : response.getHits()) {
@@ -90,7 +92,7 @@ public class PdfGraphicService implements IPdfGraphicService {
         return result;
     }
 
-    private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsEntity> list) {
+    private void getGraphicsEsData(File reportTitleDir, List<GraphicsEsEntity> list) throws UnsupportedEncodingException {
         // 获取文件列表
         File[] graphicList = reportTitleDir.listFiles();
         assert graphicList != null;
@@ -104,9 +106,14 @@ public class PdfGraphicService implements IPdfGraphicService {
                 GraphicsEsEntity graphicsEsEntity = new GraphicsEsEntity();
                 graphicsEsEntity.setReportTitle(reportTitleDir.getName());
                 String title = graphic.getName();
+                System.out.println(reportTitleDir.getName() + "---" + title);
                 title = title.substring(0, title.lastIndexOf("."));
                 graphicsEsEntity.setTitle(title);
-                graphicsEsEntity.setUrl(graphicHostport + "/report_graphic/" + reportTitleDir.getName() + "/" + graphic.getName());
+                graphicsEsEntity.setContent("");
+                String url = graphicHostport + "/report_graphic/" + reportTitleDir.getName() + "/" + graphic.getName();
+                url = url.replace("%", "%25");//tomcat把url中的路径的%转义成%25
+                graphicsEsEntity.setUrl(url);
+
                 list.add(graphicsEsEntity);
             }
         }
