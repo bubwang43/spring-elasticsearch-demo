@@ -13,11 +13,10 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>demo-es</name>
     <description>Demo project for Spring Boot</description>
-
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
+    <packaging>war</packaging>
     <dependencies>
 
         <dependency>
@@ -99,9 +98,18 @@
             <version>4.5.6</version>
         </dependency>
 
+        <!--打包不参与，也就是打包去掉tomcat-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
+        <finalName>es-demo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
