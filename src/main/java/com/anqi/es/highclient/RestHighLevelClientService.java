@@ -189,6 +189,15 @@ public class RestHighLevelClientService {
         return client.search(request, RequestOptions.DEFAULT);
     }
 
+    public SearchResponse search(String field, String key, String ... indexNames) throws IOException{
+        SearchRequest request = new SearchRequest(indexNames);
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        builder.query(new MatchQueryBuilder(field, key));
+        request.source(builder);
+        return client.search(request, RequestOptions.DEFAULT);
+    }
+
+
     /**
      * term 查询 精准匹配
      * @param field
@@ -205,6 +214,14 @@ public class RestHighLevelClientService {
         builder.query(QueryBuilders.termsQuery(field, key))
                 .from(page)
                 .size(size);
+        request.source(builder);
+        return client.search(request, RequestOptions.DEFAULT);
+    }
+
+    public SearchResponse termSearch(String field, String key, String ... indexNames) throws IOException{
+        SearchRequest request = new SearchRequest(indexNames);
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        builder.query(QueryBuilders.termsQuery(field, key));
         request.source(builder);
         return client.search(request, RequestOptions.DEFAULT);
     }
