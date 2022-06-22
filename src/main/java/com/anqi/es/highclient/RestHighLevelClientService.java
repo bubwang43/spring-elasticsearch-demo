@@ -210,7 +210,7 @@ public class RestHighLevelClientService {
     }
 
     /**
-     * 组合查询(或):只要一个field满足key就可以查询到
+     * 组合查询(or):只要一个field满足key就可以查询到
      * @param filedKeyMap
      * @param page
      * @param size
@@ -231,6 +231,30 @@ public class RestHighLevelClientService {
         request.source(builder);
         return client.search(request, RequestOptions.DEFAULT);
     }
+
+    /**
+     * 组合查询(and):必须同时满足must中的条件
+     * @param filedKeyMap
+     * @param page
+     * @param size
+     * @param indexNames
+     * @return
+     * @throws IOException
+     */
+    public SearchResponse mustGroupSearch(Map<String, String> filedKeyMap, int page, int size, String ... indexNames) throws IOException {
+        SearchRequest request = new SearchRequest(indexNames);
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        for (Map.Entry<String, String> entry : filedKeyMap.entrySet()) {
+            boolQuery.must(QueryBuilders.matchQuery(entry.getKey(), entry.getValue()));
+        }
+        builder.query(boolQuery)
+                .from(page)
+                .size(size);
+        request.source(builder);
+        return client.search(request, RequestOptions.DEFAULT);
+    }
+
 
 
     /**
