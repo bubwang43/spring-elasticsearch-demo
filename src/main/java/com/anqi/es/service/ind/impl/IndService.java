@@ -12,6 +12,8 @@ import com.anqi.es.vo.ind.IndResultVo;
 import com.anqi.es.vo.ind.IndValueVo;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,10 +21,8 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,60 +63,31 @@ public class IndService implements IIndService {
         if (StringUtils.isEmpty(indCName)) {
             return  result;
         }
-        SearchResponse response = restHighLevelClientService.search("indCName", indCName, indexName);
-        Set<String> indScopeSet = new HashSet<>();
-        Set<String> dataBeginDateSet = new HashSet<>();
-        Set<String> indFrequencySet = new HashSet<>();
-        Set<String> indUnitSet = new HashSet<>();
-        Set<String> dataSourceSet = new HashSet<>();
-        for (SearchHit hit : response.getHits()) {
-            IndResultVo indResultVo = JSON.parseObject(hit.getSourceAsString(), IndResultVo.class);
-            indScopeSet.add(indResultVo.getIndScope());
-            dataBeginDateSet.add(indResultVo.getDataBeginDate());
-            indFrequencySet.add(indResultVo.getIndFrequency());
-            indUnitSet.add(indResultVo.getIndUnit());
-            dataSourceSet.add(indResultVo.getDataSource());
+        String[] aggFields = new String[]{
+                "indScope","dataBeginDate","indFrequency","indUnit","dataSource"
+        };
+
+        SearchResponse response = restHighLevelClientService.AggregateSumByFields("indCName", indCName, aggFields, indexName);
+        Aggregations aggregations = response.getAggregations();
+        for (String aggField : aggFields) {
+            Terms aggregation = aggregations.get(aggField);
+            List<IndItemFilterObj> indItemFilterObjList = aggregation.getBuckets().stream().map(bucket -> new IndItemFilterObj(bucket.getKeyAsString(), bucket.getDocCount())).collect(Collectors.toList());
+            if ("indScope".equals(aggField)) {
+                result.setIndScope(indItemFilterObjList);
+            }
+            if ("dataBeginDate".equals(aggField)) {
+                result.setDataBeginDate(indItemFilterObjList);
+            }
+            if ("indFrequency".equals(aggField)) {
+                result.setIndFrequency(indItemFilterObjList);
+            }
+            if ("indUnit".equals(aggField)) {
+                result.setIndUnit(indItemFilterObjList);
+            }
+            if ("dataSource".equals(aggField)) {
+                result.setDataSource(indItemFilterObjList);
+            }
         }
-        Set<IndItemFilterObj> indScope = indScopeSet.stream().filter(v -> v != null).map(v -> {
-            IndItemFilterObj indItemFilterObj = new IndItemFilterObj();
-            indItemFilterObj.setId(v);
-            indItemFilterObj.setName(v);
-            return indItemFilterObj;
-        }).collect(Collectors.toSet());
-        result.setIndScope(indScope);
-
-        Set<IndItemFilterObj> dataBeginDate = dataBeginDateSet.stream().filter(v -> v != null).map(v -> {
-            IndItemFilterObj indItemFilterObj = new IndItemFilterObj();
-            indItemFilterObj.setId(v);
-            indItemFilterObj.setName(v);
-            return indItemFilterObj;
-        }).collect(Collectors.toSet());
-        result.setDataBeginDate(dataBeginDate);
-
-        Set<IndItemFilterObj> indFrequency = indFrequencySet.stream().filter(v -> v != null).map(v -> {
-            IndItemFilterObj indItemFilterObj = new IndItemFilterObj();
-            indItemFilterObj.setId(v);
-            indItemFilterObj.setName(v);
-            return indItemFilterObj;
-        }).collect(Collectors.toSet());
-        result.setIndFrequency(indFrequency);
-
-        Set<IndItemFilterObj> indUnit = indUnitSet.stream().filter(v -> v != null).map(v -> {
-            IndItemFilterObj indItemFilterObj = new IndItemFilterObj();
-            indItemFilterObj.setId(v);
-            indItemFilterObj.setName(v);
-            return indItemFilterObj;
-        }).collect(Collectors.toSet());
-        result.setIndUnit(indUnit);
-
-        Set<IndItemFilterObj> dataSource = dataSourceSet.stream().filter(v -> v != null).map(v -> {
-            IndItemFilterObj indItemFilterObj = new IndItemFilterObj();
-            indItemFilterObj.setId(v);
-            indItemFilterObj.setName(v);
-            return indItemFilterObj;
-        }).collect(Collectors.toSet());
-        result.setDataSource(dataSource);
-
         return result;
     }
 

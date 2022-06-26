@@ -27,6 +27,8 @@ import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -301,5 +303,28 @@ public class RestHighLevelClientService {
             }
         }
         return client.bulk(request, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * 查询并根据查询结果某些字段进行sum聚合
+     * @param field 查询字段
+     * @param key 搜索内容
+     * @param aggFields 用于聚合的字段
+     * @param indexName es索引名
+     * @return
+     * @throws IOException
+     */
+    public SearchResponse AggregateSumByFields(String field, String key, String[] aggFields, String indexName) throws IOException{
+        SearchRequest searchRequest = new SearchRequest(indexName);
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        //根据field key查询结果
+        sourceBuilder.query(new MatchQueryBuilder(field, key));
+        //根据fields进行聚合sum
+        for (String aggField : aggFields) {
+            TermsAggregationBuilder termAggregation = AggregationBuilders.terms(aggField).field(aggField);
+            sourceBuilder.aggregation(termAggregation);
+        }
+        searchRequest.source(sourceBuilder);
+        return client.search(searchRequest, RequestOptions.DEFAULT);
     }
 }

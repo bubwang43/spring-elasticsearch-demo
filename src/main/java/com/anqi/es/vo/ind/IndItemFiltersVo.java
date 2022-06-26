@@ -2,18 +2,18 @@ package com.anqi.es.vo.ind;
 
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class IndItemFiltersVo {
-    private Set<IndItemFilterObj> indScope = new HashSet<>();
+    private List<IndItemFilterObj> indScope = new ArrayList<>();
 
-    private Set<IndItemFilterObj> dataBeginDate = new HashSet<>();
+    private List<IndItemFilterObj> dataBeginDate = new ArrayList<>();
 
-    private Set<IndItemFilterObj> indFrequency = new HashSet<>();
+    private List<IndItemFilterObj> indFrequency = new ArrayList<>();
 
-    private Set<IndItemFilterObj> indUnit = new HashSet<>();
+    private List<IndItemFilterObj> indUnit = new ArrayList<>();
 
-    private Set<IndItemFilterObj> dataSource = new HashSet<>();
+    private List<IndItemFilterObj> dataSource = new ArrayList<>();
 }
